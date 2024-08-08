@@ -36,3 +36,39 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  padding: 20px;
+}
+
+header {
+  margin-bottom: 20px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 100px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+.review-item {
+  margin-bottom: 10px;
+}
+
+.review-item a {
+  font-weight: bold;
+}
+
+.review-item span {
+  font-style: italic;
+  color: #666;
+}
