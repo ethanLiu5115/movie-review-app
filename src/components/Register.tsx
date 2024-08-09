@@ -7,62 +7,79 @@ const Register: React.FC = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('user'); // 默认角色为'user'
     const [message, setMessage] = useState('');
     const authContext = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleRegister = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/api/register', { name, email, password });
-            console.log('Registration response:', response.data);
+            const response = await axios.post('http://localhost:5000/api/users/register', {
+                name,
+                email,
+                password,
+                role,
+            });
             authContext?.setUser(response.data.user);
             setMessage('Registration successful!');
             navigate('/');
         } catch (error: any) {
             console.error('Registration failed:', error);
-            setMessage('Registration failed: ' + (error.response?.data?.message || error.message));
+            setMessage(`Registration failed: ${error.response?.data?.message || error.message}`);
         }
     };
 
     return (
         <div className="container">
             <h2>Register</h2>
-            <form onSubmit={(e) => { e.preventDefault(); handleRegister(); }}>
-                <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">Register</button>
-            </form>
             {message && <p>{message}</p>}
+            <div className="form-group">
+                <label htmlFor="name">Name:</label>
+                <input
+                    type="text"
+                    id="name"
+                    className="form-control"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="email">Email:</label>
+                <input
+                    type="email"
+                    id="email"
+                    className="form-control"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="role">Role:</label>
+                <select
+                    id="role"
+                    className="form-control"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <button className="btn btn-primary" onClick={handleRegister}>
+                Register
+            </button>
         </div>
     );
-}
+};
 
 export default Register;

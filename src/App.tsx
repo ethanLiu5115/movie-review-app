@@ -43,7 +43,7 @@ const App: React.FC = () => {
                                 <Link className="nav-link" to="/search">Search</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/profile">Profile</Link>
+                                <Link className="nav-link" to={user ? `/profile/${user.email}` : "/login"}>Profile</Link>
                             </li>
                         </ul>
                         <ul className="navbar-nav ml-auto">
@@ -57,9 +57,14 @@ const App: React.FC = () => {
                                     </li>
                                 </>
                             ) : (
-                                <li className="nav-item">
-                                    <button className="nav-link btn btn-link" onClick={handleLogout}>Logout</button>
-                                </li>
+                                <>
+                                    <li className="nav-item">
+                                        <span className="navbar-text">Role: {user.role}</span>
+                                    </li>
+                                    <li className="nav-item">
+                                        <button className="nav-link btn btn-link" onClick={handleLogout}>Logout</button>
+                                    </li>
+                                </>
                             )}
                         </ul>
                     </div>
@@ -67,7 +72,7 @@ const App: React.FC = () => {
                 <div className="container">
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/profile/:userId" element={<Profile />} />
                         <Route path="/search" element={<Search />} />
                         <Route path="/details/:id" element={<Details />} />
                         <Route path="/login" element={<Login />} />
