@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../App';
 
-const API_KEY = 'abd8a21'; // 使用你注册的OMDb API key
+const API_KEY = 'abd8a21';
 
 interface Review {
     _id: string;
@@ -91,11 +91,12 @@ const Details: React.FC = () => {
         try {
             const newReview = {
                 movieId: id,
-                userId: authContext.user.email,
+                userId: authContext.user._id, // 使用数据库中的用户ID
                 review,
             };
             const response = await axios.post('http://localhost:5000/api/reviews', newReview);
-            setReviews([...reviews, { ...response.data, userName: authContext.user.name }]);
+            const userName = authContext.user.name || ''; // 获取用户名
+            setReviews([...reviews, { ...response.data, userName }]); // 新增评论后更新评论列表
             setReview('');
         } catch (error) {
             console.error('Failed to submit review:', error);

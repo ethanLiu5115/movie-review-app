@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../App';
 
@@ -17,8 +17,14 @@ const Profile: React.FC = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [reviews, setReviews] = useState<Review[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if (!authContext.user) {
+            navigate('/login');
+            return;
+        }
+
         const fetchUser = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/users/${userId}`);
@@ -40,17 +46,17 @@ const Profile: React.FC = () => {
 
         fetchUser();
         fetchReviews();
-    }, [userId]);
+    }, [userId, authContext.user, navigate]);
 
     const handleSave = async () => {
-        if (authContext.user.email !== userId) {
+        if (authContext.user._id !== userId) {
             alert('You can only edit your own profile.');
             return;
         }
 
         try {
             await axios.put('http://localhost:5000/api/users', {
-                userId: authContext.user.email,
+                userId: authContext.user._id,
                 name,
                 email,
             });
@@ -66,7 +72,7 @@ const Profile: React.FC = () => {
     return (
         <div className="container">
             <h2>User Profile</h2>
-            {authContext.user.email === userId ? (
+            {authContext.user._id === userId ? (
                 <>
                     <div className="form-group">
                         <label htmlFor="name">Name:</label>
@@ -106,7 +112,7 @@ const Profile: React.FC = () => {
                         <p><strong>Movie ID:</strong> {review.movieId}</p>
                         <p><strong>Review:</strong> {review.review}</p>
                         <p><strong>Written on:</strong> {new Date(review.createdAt).toLocaleString()}</p>
-                        {authContext.user.role === 'admin' && authContext.user.email !== userId && (
+                        {authContext.user.role === 'admin' && authContext.user._id !== userId && (
                             <>
                                 <p><strong>User ID:</strong> <Link to={`/profile/${review.userId}`}>{review.userId}</Link></p>
                             </>
