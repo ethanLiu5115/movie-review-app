@@ -91,12 +91,12 @@ const Details: React.FC = () => {
         try {
             const newReview = {
                 movieId: id,
-                userId: authContext.user._id, // 使用数据库中的用户ID
+                userId: authContext.user._id,
                 review,
             };
             const response = await axios.post('http://localhost:5000/api/reviews', newReview);
-            const userName = authContext.user.name || ''; // 获取用户名
-            setReviews([...reviews, { ...response.data, userName }]); // 新增评论后更新评论列表
+            const userName = authContext.user.name || '';
+            setReviews([...reviews, { ...response.data, userName }]);
             setReview('');
         } catch (error) {
             console.error('Failed to submit review:', error);
