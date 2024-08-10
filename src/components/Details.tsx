@@ -61,7 +61,7 @@ const Details: React.FC = () => {
 
         const fetchReviews = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/reviews?movieId=${id}`);
+                const response = await axios.get(`http://localhost:5000/api/reviews/movie?movieId=${id}`);
                 setReviews(response.data);
             } catch (error) {
                 console.error('Failed to fetch reviews:', error);
@@ -81,7 +81,7 @@ const Details: React.FC = () => {
         try {
             const newReview = {
                 movieId: id,
-                userId: authContext.user._id,
+                userId: authContext.user._id,  // 使用数据库中用户ID
                 review,
             };
             const response = await axios.post('http://localhost:5000/api/reviews', newReview);
