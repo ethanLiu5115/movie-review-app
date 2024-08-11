@@ -27,6 +27,7 @@ const App: React.FC = () => {
     const handleLogout = () => {
         localStorage.removeItem('user');
         setUser(null);
+        window.location.href = '/'; // 直接重定向到未登录状态的首页
     };
 
     return (

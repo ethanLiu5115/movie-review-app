@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../App';
 
+const API_KEY = 'abd8a21';
+
 interface Review {
     _id: string;
     movieId: string;
     userId: string;
     review: string;
     createdAt: string;
+    movieTitle: string;
 }
 
 const Home: React.FC = () => {
@@ -19,7 +22,13 @@ const Home: React.FC = () => {
         const fetchRecentReviews = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/reviews');
-                setRecentReviews(response.data);
+                const reviewsWithTitles = await Promise.all(
+                    response.data.map(async (review: Review) => {
+                        const movieResponse = await axios.get(`http://www.omdbapi.com/?i=${review.movieId}&apikey=${API_KEY}`);
+                        return { ...review, movieTitle: movieResponse.data.Title };
+                    })
+                );
+                setRecentReviews(reviewsWithTitles);
             } catch (error) {
                 console.error('Failed to fetch recent reviews:', error);
             }
@@ -45,8 +54,9 @@ const Home: React.FC = () => {
                 {recentReviews.map((review) => (
                     <li key={review._id} className="list-group-item">
                         <p>{review.review}</p>
-                        <p><Link to={`/details/${review.movieId}`}>View Movie</Link></p>
-                        <p>Written by: <Link to={`/profile/${review.userId}`}>User</Link></p>
+                        <p><Link to={`/details/${review.movieId}`}>{review.movieTitle}</Link></p>
+                        <p>Written by: <Link to={`/profile/${review.userId}`}>{review.userId}</Link></p>
+                        <p><small>Written on: {new Date(review.createdAt).toLocaleString()}</small></p>
                     </li>
                 ))}
             </ul>

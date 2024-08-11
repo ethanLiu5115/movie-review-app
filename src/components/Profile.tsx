@@ -21,7 +21,7 @@ const Profile: React.FC = () => {
 
     useEffect(() => {
         if (!authContext.user) {
-            navigate('/login');
+            navigate('/');
             return;
         }
 
@@ -49,7 +49,7 @@ const Profile: React.FC = () => {
     }, [userId, authContext.user, navigate]);
 
     const handleSave = async () => {
-        if (authContext.user._id !== userId) {
+        if (authContext.user?._id !== userId) {
             alert('You can only edit your own profile.');
             return;
         }
@@ -72,7 +72,7 @@ const Profile: React.FC = () => {
     return (
         <div className="container">
             <h2>User Profile</h2>
-            {authContext.user._id === userId ? (
+            {authContext.user?._id === userId ? (
                 <>
                     <div className="form-group">
                         <label htmlFor="name">Name:</label>
@@ -112,7 +112,7 @@ const Profile: React.FC = () => {
                         <p><strong>Movie ID:</strong> {review.movieId}</p>
                         <p><strong>Review:</strong> {review.review}</p>
                         <p><strong>Written on:</strong> {new Date(review.createdAt).toLocaleString()}</p>
-                        {authContext.user.role === 'admin' && authContext.user._id !== userId && (
+                        {authContext.user?.role === 'admin' && authContext.user._id !== userId && (
                             <>
                                 <p><strong>User ID:</strong> <Link to={`/profile/${review.userId}`}>{review.userId}</Link></p>
                             </>
