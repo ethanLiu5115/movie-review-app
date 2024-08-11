@@ -54,9 +54,9 @@ const Home: React.FC = () => {
                 {recentReviews.map((review) => (
                     <li key={review._id} className="list-group-item">
                         <p>{review.review}</p>
-                        <p><Link to={`/details/${review.movieId}`}>{review.movieTitle}</Link></p>
-                        <p>Written by: <Link to={`/profile/${review.userId}`}>{review.userId}</Link></p>
-                        <p><small>Written on: {new Date(review.createdAt).toLocaleString()}</small></p>
+                        <p>Movie: <Link to={`/details/${review.movieId}`}>{review.movieTitle}</Link></p>
+                        <p>Written by: <Link to={`/profile/${review.userId}`} style={{ marginLeft: '5px' }}>{review.userId}</Link></p>
+                        <p>Written on: {new Date(review.createdAt).toLocaleString()}</p>
                     </li>
                 ))}
             </ul>

@@ -44,7 +44,7 @@ const App: React.FC = () => {
                                 <Link className="nav-link" to="/search">Search</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to={user ? `/profile/${user.email}` : "/login"}>Profile</Link>
+                                <Link className="nav-link" to={user ? `/profile/${user._id}` : "/login"}>Profile</Link>
                             </li>
                         </ul>
                         <ul className="navbar-nav ml-auto">

@@ -20,11 +20,6 @@ const Profile: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!authContext.user) {
-            navigate('/');
-            return;
-        }
-
         const fetchUser = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/users/${userId}`);
@@ -32,6 +27,7 @@ const Profile: React.FC = () => {
                 setEmail(response.data.email);
             } catch (error) {
                 console.error('Failed to fetch user:', error);
+                navigate('/'); // 如果获取用户失败，返回首页
             }
         };
 
@@ -107,16 +103,11 @@ const Profile: React.FC = () => {
 
             <h3 style={{ marginTop: '20px' }}>User Reviews</h3>
             <ul className="list-group">
-                {reviews.map((review) => (
+                {reviews.filter((review) => review.userId === userId).map((review) => (
                     <li key={review._id} className="list-group-item">
                         <p><strong>Movie ID:</strong> {review.movieId}</p>
                         <p><strong>Review:</strong> {review.review}</p>
                         <p><strong>Written on:</strong> {new Date(review.createdAt).toLocaleString()}</p>
-                        {authContext.user?.role === 'admin' && authContext.user._id !== userId && (
-                            <>
-                                <p><strong>User ID:</strong> <Link to={`/profile/${review.userId}`}>{review.userId}</Link></p>
-                            </>
-                        )}
                     </li>
                 ))}
             </ul>
