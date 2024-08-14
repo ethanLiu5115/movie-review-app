@@ -77,6 +77,12 @@ const Profile: React.FC = () => {
         }
     };
 
+    const obfuscateEmail = (email: string) => {
+        const [localPart, domain] = email.split('@');
+        const obfuscatedLocalPart = localPart.slice(0, 2) + '****' + localPart.slice(-1);
+        return `${obfuscatedLocalPart}@${domain}`;
+    };
+
     return (
         <div className="container">
             <h2>User Profile</h2>
@@ -109,7 +115,7 @@ const Profile: React.FC = () => {
             ) : (
                 <>
                     <p><strong>Name:</strong> {name}</p>
-                    <p><strong>Email:</strong> {email}</p>
+                    <p><strong>Email:</strong> {obfuscateEmail(email)}</p> {/* 显示模糊处理的 email */}
                 </>
             )}
 
