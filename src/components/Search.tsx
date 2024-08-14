@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const API_KEY = 'abd8a21';
 
@@ -12,13 +12,24 @@ interface SearchResult {
 }
 
 const Search: React.FC = () => {
-    const [query, setQuery] = useState(localStorage.getItem('query') || ''); // 从 localStorage 中获取查询
-    const [results, setResults] = useState<SearchResult[]>(() => {
-        const savedResults = localStorage.getItem('results');
-        return savedResults ? JSON.parse(savedResults) : [];
-    });
+    const [query, setQuery] = useState('');
+    const [results, setResults] = useState<SearchResult[]>([]);
     const [errorMessage, setErrorMessage] = useState('');
-    const [resultCount, setResultCount] = useState<number>(Number(localStorage.getItem('resultCount')) || 0);
+    const [resultCount, setResultCount] = useState(0);
+
+    const location = useLocation();
+
+    useEffect(() => {
+        const savedQuery = sessionStorage.getItem('query');
+        const savedResults = sessionStorage.getItem('results');
+        const savedResultCount = sessionStorage.getItem('resultCount');
+
+        if (savedQuery && savedResults && savedResultCount) {
+            setQuery(savedQuery);
+            setResults(JSON.parse(savedResults));
+            setResultCount(Number(savedResultCount));
+        }
+    }, [location]);
 
     const handleSearch = async () => {
         try {
@@ -28,19 +39,19 @@ const Search: React.FC = () => {
                 setResults(response.data.Search || []);
                 setResultCount(response.data.totalResults);
 
-                // 将查询和结果存储到 localStorage
-                localStorage.setItem('query', query);
-                localStorage.setItem('results', JSON.stringify(response.data.Search || []));
-                localStorage.setItem('resultCount', response.data.totalResults.toString());
+                // 将查询和结果存储到 sessionStorage
+                sessionStorage.setItem('query', query);
+                sessionStorage.setItem('results', JSON.stringify(response.data.Search || []));
+                sessionStorage.setItem('resultCount', response.data.totalResults.toString());
             } else {
                 setErrorMessage(response.data.Error);
                 setResults([]);
                 setResultCount(0);
 
-                // 清除 localStorage 中的内容
-                localStorage.removeItem('query');
-                localStorage.removeItem('results');
-                localStorage.removeItem('resultCount');
+                // 清除 sessionStorage 中的内容
+                sessionStorage.removeItem('query');
+                sessionStorage.removeItem('results');
+                sessionStorage.removeItem('resultCount');
             }
         } catch (error) {
             console.error('Failed to fetch search results:', error);
@@ -48,20 +59,12 @@ const Search: React.FC = () => {
             setResults([]);
             setResultCount(0);
 
-            // 清除 localStorage 中的内容
-            localStorage.removeItem('query');
-            localStorage.removeItem('results');
-            localStorage.removeItem('resultCount');
+            // 清除 sessionStorage 中的内容
+            sessionStorage.removeItem('query');
+            sessionStorage.removeItem('results');
+            sessionStorage.removeItem('resultCount');
         }
     };
-
-    useEffect(() => {
-        if (query && results.length > 0) {
-            localStorage.setItem('query', query);
-            localStorage.setItem('results', JSON.stringify(results));
-            localStorage.setItem('resultCount', resultCount.toString());
-        }
-    }, [query, results, resultCount]);
 
     return (
         <div className="container">
