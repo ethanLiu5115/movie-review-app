@@ -11,7 +11,7 @@ interface Review {
     userId: string;
     review: string;
     createdAt: string;
-    movieTitle?: string; // 添加 movieTitle 字段
+    movieTitle?: string;
 }
 
 const Profile: React.FC = () => {
@@ -30,7 +30,7 @@ const Profile: React.FC = () => {
                 setEmail(response.data.email);
             } catch (error) {
                 console.error('Failed to fetch user:', error);
-                navigate('/'); // 如果获取用户失败，返回首页
+                navigate('/');
             }
         };
 
@@ -42,7 +42,7 @@ const Profile: React.FC = () => {
                         const movieResponse = await axios.get(`http://www.omdbapi.com/?i=${review.movieId}&apikey=${API_KEY}`);
                         return {
                             ...review,
-                            movieTitle: movieResponse.data.Title, // 获取并添加电影标题
+                            movieTitle: movieResponse.data.Title,
                         };
                     })
                 );
@@ -115,16 +115,16 @@ const Profile: React.FC = () => {
             ) : (
                 <>
                     <p><strong>Name:</strong> {name}</p>
-                    <p><strong>Email:</strong> {obfuscateEmail(email)}</p> {/* 显示模糊处理的 email */}
+                    <p><strong>Email:</strong> {obfuscateEmail(email)}</p>
                 </>
             )}
 
             <h3 style={{ marginTop: '20px' }}>User Reviews</h3>
             <ul className="list-group">
                 {reviews.filter((review) => review.userId === userId).map((review) => (
-                    <li key={review._id} className="list-group-item">
+                    <li key={review._id} className="list-group-item review-item">
                         <p>{review.review}</p>
-                        <p>Movie: <Link to={`/details/${review.movieId}`}>{review.movieTitle}</Link></p> {/* 使用 movieTitle */}
+                        <p>Movie: <Link to={`/details/${review.movieId}`}>{review.movieTitle}</Link></p>
                         <p>Written on: {new Date(review.createdAt).toLocaleString()}</p>
                     </li>
                 ))}

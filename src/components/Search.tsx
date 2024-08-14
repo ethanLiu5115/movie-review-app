@@ -33,13 +33,12 @@ const Search: React.FC = () => {
 
     const handleSearch = async () => {
         try {
-            setErrorMessage(''); // 清空之前的错误信息
+            setErrorMessage('');
             const response = await axios.get(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`);
             if (response.data.Response === "True") {
                 setResults(response.data.Search || []);
                 setResultCount(response.data.totalResults);
 
-                // 将查询和结果存储到 sessionStorage
                 sessionStorage.setItem('query', query);
                 sessionStorage.setItem('results', JSON.stringify(response.data.Search || []));
                 sessionStorage.setItem('resultCount', response.data.totalResults.toString());
@@ -48,7 +47,6 @@ const Search: React.FC = () => {
                 setResults([]);
                 setResultCount(0);
 
-                // 清除 sessionStorage 中的内容
                 sessionStorage.removeItem('query');
                 sessionStorage.removeItem('results');
                 sessionStorage.removeItem('resultCount');
@@ -59,7 +57,6 @@ const Search: React.FC = () => {
             setResults([]);
             setResultCount(0);
 
-            // 清除 sessionStorage 中的内容
             sessionStorage.removeItem('query');
             sessionStorage.removeItem('results');
             sessionStorage.removeItem('resultCount');

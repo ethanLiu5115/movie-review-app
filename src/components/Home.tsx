@@ -9,7 +9,7 @@ interface Review {
     _id: string;
     movieId: string;
     userId: string;
-    userName: string; // 现在直接从后端获取用户名
+    userName: string;
     review: string;
     createdAt: string;
     movieTitle: string;
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
             <h3>Recent Reviews:</h3>
             <ul className="list-group">
                 {recentReviews.map((review) => (
-                    <li key={review._id} className="list-group-item">
+                    <li key={review._id} className="list-group-item review-item">
                         <p>{review.review}</p>
                         <p>Movie: <Link to={`/details/${review.movieId}`}>{review.movieTitle}</Link></p>
                         <p>Written by: <Link to={`/profile/${review.userId}`} style={{ marginLeft: '5px' }}>{review.userName}</Link></p>
@@ -61,7 +61,6 @@ const Home: React.FC = () => {
                     </li>
                 ))}
             </ul>
-
             <footer style={{ marginTop: '30px' }}>
                 <h4>About the Team</h4>
                 <p>Full names and sections of all the members in the team: Web Dev Team 3</p>

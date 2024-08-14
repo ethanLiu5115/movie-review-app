@@ -7,7 +7,7 @@ const Register: React.FC = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('user'); // 默认角色为'user'
+    const [role, setRole] = useState('user');
     const [message, setMessage] = useState('');
     const authContext = useContext(AuthContext);
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Register: React.FC = () => {
     return (
         <div className="container">
             <h2>Register</h2>
-            {message && <p>{message}</p>}
+            {message && <div className="alert alert-danger">{message}</div>}
             <div className="form-group">
                 <label htmlFor="name">Name:</label>
                 <input

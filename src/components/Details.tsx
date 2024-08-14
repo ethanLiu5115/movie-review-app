@@ -9,7 +9,7 @@ interface Review {
     _id: string;
     movieId: string;
     userId: string;
-    userName: string; // 新增字段，用于显示用户名
+    userName: string;
     review: string;
     createdAt: string;
 }
@@ -80,7 +80,7 @@ const Details: React.FC = () => {
         try {
             const newReview = {
                 movieId: id,
-                userId: authContext.user._id, // 使用用户的 _id
+                userId: authContext.user._id,
                 review,
             };
             const response = await axios.post('http://localhost:5000/api/reviews', newReview);
@@ -107,7 +107,7 @@ const Details: React.FC = () => {
             <h3>Reviews</h3>
             <ul className="list-group">
                 {reviews.map((review) => (
-                    <li key={review._id} className="list-group-item">
+                    <li key={review._id} className="list-group-item review-item">
                         <p>{review.review}</p>
                         <p>Written by: <Link to={`/profile/${review.userId}`} style={{ marginLeft: '5px' }}>{review.userName}</Link></p>
                         <p>Written on: {new Date(review.createdAt).toLocaleString()}</p>

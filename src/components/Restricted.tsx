@@ -1,4 +1,3 @@
-// src/components/Restricted.tsx
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../App';
@@ -35,7 +34,7 @@ const Restricted: React.FC = () => {
 
     const handleApprove = async (reviewId: string) => {
         try {
-            const response = await axios.put(`http://localhost:5000/api/reviews/approve/${reviewId}`, {
+            await axios.put(`http://localhost:5000/api/reviews/approve/${reviewId}`, {
                 userId: authContext.user._id
             });
             setPendingReviews(pendingReviews.filter(review => review._id !== reviewId));
@@ -53,7 +52,7 @@ const Restricted: React.FC = () => {
             <h1>Review Approval</h1>
             <ul className="list-group">
                 {pendingReviews.map((review) => (
-                    <li key={review._id} className="list-group-item">
+                    <li key={review._id} className="list-group-item review-item">
                         <p><strong>{review.userName}</strong> on {new Date(review.createdAt).toLocaleString()}</p>
                         <p>{review.review}</p>
                         <button className="btn btn-success" onClick={() => handleApprove(review._id)}>Approve</button>
