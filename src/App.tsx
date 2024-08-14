@@ -1,3 +1,4 @@
+// src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './components/Home';
@@ -6,6 +7,7 @@ import Search from './components/Search';
 import Details from './components/Details';
 import Login from './components/Login';
 import Register from './components/Register';
+import Restricted from './components/Restricted'; // 新增导入
 
 export const AuthContext = React.createContext<any>(null);
 
@@ -46,6 +48,11 @@ const App: React.FC = () => {
                             <li className="nav-item">
                                 <Link className="nav-link" to={user ? `/profile/${user._id}` : "/login"}>Profile</Link>
                             </li>
+                            {user && user.role === 'admin' && (
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/restricted">Review Approval</Link>
+                                </li>
+                            )}
                         </ul>
                         <ul className="navbar-nav ml-auto">
                             {!user ? (
@@ -78,6 +85,7 @@ const App: React.FC = () => {
                         <Route path="/details/:id" element={<Details />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
+                        <Route path="/restricted" element={<Restricted />} /> {/* 新增路由 */}
                     </Routes>
                 </div>
             </Router>

@@ -64,7 +64,7 @@ const Home: React.FC = () => {
 
             <footer style={{ marginTop: '30px' }}>
                 <h4>About the Team</h4>
-                <p>Full names and sections of all the members in the team:</p>
+                <p>Full names and sections of all the members in the team: Web Dev Team 3</p>
                 <ul>
                     <li>Yifei Liu</li>
                     <li>Jun Ye</li>
