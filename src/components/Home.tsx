@@ -9,6 +9,7 @@ interface Review {
     _id: string;
     movieId: string;
     userId: string;
+    userName: string; // 现在直接从后端获取用户名
     review: string;
     createdAt: string;
     movieTitle: string;
@@ -55,7 +56,7 @@ const Home: React.FC = () => {
                     <li key={review._id} className="list-group-item">
                         <p>{review.review}</p>
                         <p>Movie: <Link to={`/details/${review.movieId}`}>{review.movieTitle}</Link></p>
-                        <p>Written by: <Link to={`/profile/${review.userId}`} style={{ marginLeft: '5px' }}>{review.userId}</Link></p>
+                        <p>Written by: <Link to={`/profile/${review.userId}`} style={{ marginLeft: '5px' }}>{review.userName}</Link></p>
                         <p>Written on: {new Date(review.createdAt).toLocaleString()}</p>
                     </li>
                 ))}
