@@ -77,15 +77,19 @@ const Details: React.FC = () => {
             alert('You must be logged in to write a review.');
             return;
         }
+        if (!review.trim()) {
+            alert('You cannot submit an empty review.');
+            return;
+        }
         try {
             const newReview = {
                 movieId: id,
                 userId: authContext.user._id,
                 review,
             };
-            const response = await axios.post('http://localhost:5000/api/reviews', newReview);
-            setReviews([...reviews, response.data]);
+            await axios.post('http://localhost:5000/api/reviews', newReview);
             setReview('');
+            alert('Your review has been submitted and is pending approval.');
         } catch (error: any) {
             console.error('Failed to submit review:', error);
             alert('Failed to submit review: ' + (error.response?.data?.message || error.message));

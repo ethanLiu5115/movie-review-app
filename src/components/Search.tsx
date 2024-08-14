@@ -28,6 +28,10 @@ const Search: React.FC = () => {
             setQuery(savedQuery);
             setResults(JSON.parse(savedResults));
             setResultCount(Number(savedResultCount));
+        } else {
+            sessionStorage.removeItem('query');
+            sessionStorage.removeItem('results');
+            sessionStorage.removeItem('resultCount');
         }
     }, [location]);
 
@@ -63,6 +67,15 @@ const Search: React.FC = () => {
         }
     };
 
+    const clearSearch = () => {
+        setQuery('');
+        setResults([]);
+        setResultCount(0);
+        sessionStorage.removeItem('query');
+        sessionStorage.removeItem('results');
+        sessionStorage.removeItem('resultCount');
+    };
+
     return (
         <div className="container">
             <h1>Search</h1>
@@ -75,13 +88,16 @@ const Search: React.FC = () => {
                     placeholder="Search for movies..."
                 />
             </div>
-            <button className="btn btn-primary" onClick={handleSearch} style={{ marginBottom: '10px' }}>Search</button>
+            <div className="d-flex justify-content-start">
+                <button className="btn btn-primary mr-2" onClick={handleSearch}>Search</button>
+                <button className="btn btn-secondary" onClick={clearSearch}>Clear</button>
+            </div>
             {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
             {resultCount > 0 && <div className="alert alert-info" role="alert" style={{ marginTop: '10px' }}>Found {resultCount} results.</div>}
             <ul className="list-group" style={{ marginTop: '20px' }}>
                 {results.map((result, index) => (
                     <li key={index} className="list-group-item">
-                        <Link to={`/details/${result.imdbID}`}>
+                        <Link to={`/details/${result.imdbID}`} state={{ preserveSearch: true }}>
                             <img src={result.Poster} alt={result.Title} style={{ width: '50px', marginRight: '10px' }} />
                             {result.Title} ({result.Year})
                         </Link>
