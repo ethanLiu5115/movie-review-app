@@ -1,3 +1,4 @@
+// src/components/Register.tsx
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +26,7 @@ const Register: React.FC = () => {
             navigate('/');
         } catch (error: any) {
             console.error('Registration failed:', error);
-            setMessage(`Registration failed: ${error.response?.data?.message || error.message}`);
+            setMessage(error.response?.data?.message || 'Registration failed: Please try again later.');
         }
     };
 
