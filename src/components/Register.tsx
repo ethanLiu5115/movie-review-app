@@ -74,6 +74,7 @@ const Register: React.FC = () => {
                 >
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
+                    <option value="guest">Guest</option>
                 </select>
             </div>
             <button className="btn btn-primary" onClick={handleRegister}>

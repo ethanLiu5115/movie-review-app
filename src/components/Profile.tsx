@@ -14,12 +14,20 @@ interface Review {
     movieTitle?: string;
 }
 
+interface WatchHistory {
+    _id: string;
+    movieId: string;
+    watchedAt: string;
+    movieTitle?: string;
+}
+
 const Profile: React.FC = () => {
     const { userId } = useParams<{ userId: string }>();
     const authContext = useContext(AuthContext);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [reviews, setReviews] = useState<Review[]>([]);
+    const [watchHistory, setWatchHistory] = useState<WatchHistory[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -52,8 +60,30 @@ const Profile: React.FC = () => {
             }
         };
 
+        const fetchWatchHistory = async () => {
+            if (authContext.user?._id === userId) { // 仅在访问自己profile时获取Watch History
+                try {
+                    const response = await axios.get(`http://localhost:5000/api/watchHistory?userId=${userId}`);
+                    const historyWithTitles = await Promise.all(
+                        response.data.map(async (history: WatchHistory) => {
+                            const movieResponse = await axios.get(`http://www.omdbapi.com/?i=${history.movieId}&apikey=${API_KEY}`);
+                            return {
+                                ...history,
+                                movieTitle: movieResponse.data.Title,
+                            };
+                        })
+                    );
+                    setWatchHistory(historyWithTitles);
+                } catch (error) {
+                    console.error('Failed to fetch watch history:', error);
+                }
+            }
+        };
+
         fetchUser();
         fetchReviews();
+        fetchWatchHistory(); // 获取 Watch History
+
     }, [userId, authContext.user, navigate]);
 
     const handleSave = async () => {
@@ -129,6 +159,20 @@ const Profile: React.FC = () => {
                     </li>
                 ))}
             </ul>
+
+            {authContext.user?._id === userId && (
+                <>
+                    <h3 style={{ marginTop: '20px' }}>Watch History</h3>
+                    <ul className="list-group">
+                        {watchHistory.map((history) => (
+                            <li key={history._id} className="list-group-item">
+                                <p>Movie: <Link to={`/details/${history.movieId}`}>{history.movieTitle}</Link></p>
+                                <p>Watched on: {new Date(history.watchedAt).toLocaleString()}</p>
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
         </div>
     );
 };

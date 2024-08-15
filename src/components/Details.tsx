@@ -61,7 +61,7 @@ const Details: React.FC = () => {
 
         const fetchReviews = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/reviews/movie?movieId=${id}`);
+                const response = await axios.get(`http://localhost:5000/api/reviews/movie?movieId=${id}&userId=${authContext?.user?._id}`);
                 setReviews(response.data);
             } catch (error) {
                 console.error('Failed to fetch reviews:', error);
@@ -70,7 +70,7 @@ const Details: React.FC = () => {
 
         fetchDetails();
         fetchReviews();
-    }, [id]);
+    }, [id, authContext?.user?._id]);
 
     const handleReviewSubmit = async () => {
         if (!authContext?.user) {
@@ -118,7 +118,7 @@ const Details: React.FC = () => {
                     </li>
                 ))}
             </ul>
-            {authContext?.user && (
+            {authContext?.user && authContext.user.role !== 'guest' && (
                 <div style={{ marginTop: '20px' }}>
                     <h3>Write a Review</h3>
                     <textarea
