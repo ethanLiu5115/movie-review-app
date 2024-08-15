@@ -14,6 +14,7 @@ const Login: React.FC = () => {
         try {
             const response = await axios.post('http://localhost:5000/api/users/login', { email, password });
             authContext?.setUser(response.data.user);
+            sessionStorage.setItem('user', JSON.stringify(response.data.user)); // Save to sessionStorage
             navigate('/');
         } catch (error: any) {
             console.error('Login failed:', error);

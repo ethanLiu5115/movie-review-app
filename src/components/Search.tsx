@@ -1,4 +1,3 @@
-// src/components/Search.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
@@ -62,6 +61,7 @@ const Search: React.FC = () => {
                 setErrorMessage(response.data.Error);
                 setResults([]);
                 setResultCount(0);
+                setTotalPages(0); // Clear total pages
 
                 sessionStorage.removeItem('query');
                 sessionStorage.removeItem('results');
@@ -73,6 +73,7 @@ const Search: React.FC = () => {
             setErrorMessage('Failed to fetch search results. Please try again later.');
             setResults([]);
             setResultCount(0);
+            setTotalPages(0); // Clear total pages
 
             sessionStorage.removeItem('query');
             sessionStorage.removeItem('results');
@@ -86,6 +87,7 @@ const Search: React.FC = () => {
         setResults([]);
         setResultCount(0);
         setCurrentPage(1);
+        setTotalPages(0); // Clear total pages
         sessionStorage.removeItem('query');
         sessionStorage.removeItem('results');
         sessionStorage.removeItem('resultCount');
