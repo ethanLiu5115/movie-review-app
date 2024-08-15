@@ -36,7 +36,10 @@ const App: React.FC = () => {
             <Router>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     <Link className="navbar-brand" to="/">Movie Review App</Link>
-                    <div className="collapse navbar-collapse">
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item">
                                 <Link className="nav-link" to="/">Home</Link>
@@ -76,7 +79,7 @@ const App: React.FC = () => {
                         </ul>
                     </div>
                 </nav>
-                <div className="container">
+                <div className="container mt-4">
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/profile/:userId" element={<Profile />} />

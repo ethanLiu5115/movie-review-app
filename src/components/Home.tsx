@@ -44,7 +44,7 @@ const Home: React.FC = () => {
             {authContext?.user ? (
                 <h2>Welcome back, {authContext.user.name}!</h2>
             ) : (
-                <h2>Welcome to our community!</h2>
+                <h2>Welcome to our community! Anonymous user</h2>
             )}
             <p>
                 This website is dedicated to movie enthusiasts who love to share their opinions on the latest and greatest films.

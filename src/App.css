@@ -44,6 +44,7 @@
 /* Container padding */
 .container {
   padding: 20px;
+  margin-top: 20px;
 }
 
 /* Header margin */
@@ -90,4 +91,17 @@ button {
   textarea {
     min-height: 80px;
   }
+}
+
+/* Navbar styles */
+.navbar-nav {
+  justify-content: space-between;
+}
+
+.navbar-nav .nav-item {
+  margin-right: 10px;
+}
+
+.navbar-brand {
+  margin-right: auto;
 }
